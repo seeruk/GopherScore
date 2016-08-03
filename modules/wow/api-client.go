@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/SeerUK/GopherScore/modules/wow/models"
 )
 
 // ApiClient provides easy access to specific World of Warcraft API endpoints.
@@ -28,14 +26,14 @@ func NewApiClient(apiKey string) *ApiClient {
 }
 
 // SetLocale sets the locale for future requests via this API client.
-func (c *ApiClient) SetLocale(locale string) *ApiClient {
+func (c *ApiClient) SetLocale(locale string) {
 	c.Locale = locale
-	return c
 }
 
 // FindCharacter attempts to find a given character.
-func (c *ApiClient) FindCharacter(region string, realm string, name string) (*models.Character, error) {
-	character := &models.Character{}
+func (c *ApiClient) FindCharacter(region string, realm string, name string) (*Character, error) {
+	character := &Character{}
+
 	uri := fmt.Sprintf(
 		"wow/character/%s/%s",
 		realm,

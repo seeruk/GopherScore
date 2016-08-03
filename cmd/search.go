@@ -49,14 +49,21 @@ func SearchCommand() gonsole.Command {
 			return 1
 		}
 
-		resolver := wow.CharacterDataResolver{}
+		calculator := wow.AggregateScoreCalculator{}
+		calculator.AddCalculator(wow.AchievementScoreCalculator{})
+		calculator.AddCalculator(wow.ItemsScoreCalculator{})
+		calculator.AddCalculator(wow.ProfessionsScoreCalculator{})
+		calculator.AddCalculator(wow.ProgressionScoreCalculator{})
 
-		fmt.Println("Lookup result:")
-		fmt.Println("-", character.Name)
-		fmt.Println("-", character.Level)
-		fmt.Println("-", resolver.ResolveFaction(character.Faction))
-		fmt.Println("-", resolver.ResolveRace(character.Race))
-		fmt.Println("-", resolver.ResolveClassName(character.Class))
+		fmt.Println(fmt.Sprintf(
+			"Score for %s, a level %d %s %s:",
+			character.Name,
+			character.Level,
+			character.FactionName(),
+			character.ClassName(),
+		))
+
+		fmt.Println("-", calculator.Calculate(*character))
 
 		return 0
 	}
