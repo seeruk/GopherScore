@@ -40,7 +40,42 @@ type ItemsScoreCalculator struct{}
 
 // Calculate a score for the character's items.
 func (c ItemsScoreCalculator) Calculate(character Character) int {
-	return 11
+	var score int
+
+	items := character.Items
+	weighting := 1
+
+	score += calculateItemScore(items.Head, weighting)
+	score += calculateItemScore(items.Neck, weighting)
+	score += calculateItemScore(items.Shoulder, weighting)
+	score += calculateItemScore(items.Back, weighting)
+	score += calculateItemScore(items.Chest, weighting)
+	score += calculateItemScore(items.Wrist, weighting)
+	score += calculateItemScore(items.Hands, weighting)
+	score += calculateItemScore(items.Waist, weighting)
+	score += calculateItemScore(items.Legs, weighting)
+	score += calculateItemScore(items.Feet, weighting)
+	score += calculateItemScore(items.Finger1, weighting)
+	score += calculateItemScore(items.Finger2, weighting)
+	score += calculateItemScore(items.Trinket1, weighting)
+	score += calculateItemScore(items.Trinket2, weighting)
+
+	// 2-handed weapons should have double the score.
+	mainHandWeighting := 2
+
+	if items.OffHand.ID != 0 {
+		mainHandWeighting = weighting
+
+		score += calculateItemScore(items.OffHand, weighting)
+	}
+
+	score += calculateItemScore(items.MainHand, mainHandWeighting)
+
+	return score
+}
+
+func calculateItemScore(item Item, weighting int) int {
+	return (item.ItemLevel * weighting) * item.Quality
 }
 
 // ProfessionsScoreCalculator calculates a character's title score.
@@ -48,7 +83,24 @@ type ProfessionsScoreCalculator struct{}
 
 // Calculate a score for the character's professions.
 func (c ProfessionsScoreCalculator) Calculate(character Character) int {
-	return 111
+	return calculateProfessionsScore(character.Professions.Primary, 30) +
+		calculateProfessionsScore(character.Professions.Secondary, 10)
+}
+
+// calculateProfessionsScores takes a collection of professions and calculates a score, with the
+// given weighting.
+func calculateProfessionsScore(professions []Profession, weighting int) int {
+	var score int
+
+	for _, profession := range professions {
+		if profession.MaxRank == 0 {
+			continue
+		}
+
+		score += ((100 / profession.MaxRank) * profession.Rank) * weighting
+	}
+
+	return score
 }
 
 // TitleScoreCalculator calculates a character's title score.
@@ -56,5 +108,14 @@ type ProgressionScoreCalculator struct{}
 
 // Calculate a score for the character's progression.
 func (c ProgressionScoreCalculator) Calculate(character Character) int {
-	return 1111
+	var score int
+
+	for _, raid := range character.Progression.Raids {
+		score += raid.LFRClears * 100
+		score += raid.NormalClears * 200
+		score += raid.HeroicClears * 300
+		score += raid.MythicClears * 400
+	}
+
+	return score
 }
