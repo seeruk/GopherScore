@@ -6,7 +6,7 @@ package wow
 type Character struct {
 	Name                string      `json:"name"`
 	Realm               string      `json:"realm"`
-	Battlegroup         string      `json:"realm"`
+	Battlegroup         string      `json:"battlegroup"`
 	Class               int         `json:"class"`
 	Race                int         `json:"race"`
 	Gender              int         `json:"gender"`

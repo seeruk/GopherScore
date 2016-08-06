@@ -15,7 +15,7 @@ type SearchCommand struct {
 // NewSearchCommand creates a new instance of SearchCommand.
 func NewSearchCommand(calculator wow.ScoreCalculator) *SearchCommand {
 	return &SearchCommand{
-		calculator,
+		calculator: calculator,
 	}
 }
 

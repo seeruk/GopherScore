@@ -1,11 +1,15 @@
 package cmd
 
 import (
+	"net/http"
+
+	"github.com/SeerUK/GopherScore/handlers"
 	"github.com/SeerUK/GopherScore/modules/wow"
 	"github.com/eidolon/gonsole"
+	"github.com/gorilla/mux"
 )
 
-// ServeCOmmand has fields for the dependencies of the serve command.
+// ServeCommand has fields for the dependencies of the serve command.
 type ServeCommand struct {
 	calculator wow.ScoreCalculator
 }
@@ -13,7 +17,7 @@ type ServeCommand struct {
 // NewServeCommand creates a new instance of ServeCommand.
 func NewServeCommand(calculator wow.ScoreCalculator) *ServeCommand {
 	return &ServeCommand{
-		calculator,
+		calculator: calculator,
 	}
 }
 
@@ -30,6 +34,14 @@ func (c *ServeCommand) Command() gonsole.Command {
 	}
 
 	execute := func() int {
+		client := wow.NewApiClient(apiKey)
+		handler := handlers.NewScoreHandler(c.calculator, client).Handler
+
+		router := mux.NewRouter()
+		router.HandleFunc("/score/{region}/{realm}/{name}", handler)
+
+		http.ListenAndServe("0.0.0.0:8080", router)
+
 		return 0
 	}
 
