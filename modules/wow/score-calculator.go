@@ -1,11 +1,15 @@
 package wow
 
-// ScoreCalculator contains methods for calculating player's
+// ScoreCalculator contains methods for calculating a character's score related to specific
+// properties of a character.
 type ScoreCalculator interface {
 	Calculate(Character) int
 }
 
-// AggregateScoreCalculator
+// -- Aggregate score calculator.
+
+// AggregateScoreCalculator ties together other score calculators and provides a single score for
+// all of them combined.
 type AggregateScoreCalculator struct {
 	calculators []ScoreCalculator
 }
@@ -17,7 +21,7 @@ func (c *AggregateScoreCalculator) AddCalculator(calculator ScoreCalculator) {
 
 // Calculate a score based on a combination of the results of other score calculators.
 func (c *AggregateScoreCalculator) Calculate(character Character) int {
-	score := 0
+	var score int
 
 	for _, calculator := range c.calculators {
 		score += calculator.Calculate(character)
@@ -25,6 +29,8 @@ func (c *AggregateScoreCalculator) Calculate(character Character) int {
 
 	return score
 }
+
+// -- Achievement score calculator.
 
 // AchievementScoreCalculator calculates a character's achievement score, based on the total number
 // of achievement points.
@@ -34,6 +40,8 @@ type AchievementScoreCalculator struct{}
 func (c AchievementScoreCalculator) Calculate(character Character) int {
 	return character.AchievementPoints / 2
 }
+
+// -- Item score calculator.
 
 // ItemsScoreCalculator calculates a character's item's score, based on item level and quality.
 type ItemsScoreCalculator struct{}
@@ -74,9 +82,12 @@ func (c ItemsScoreCalculator) Calculate(character Character) int {
 	return score
 }
 
+// calculateItemScore calculates a given item's score, with a given weighting.
 func calculateItemScore(item Item, weighting int) int {
 	return (item.ItemLevel * weighting) * item.Quality
 }
+
+// -- Professions score calculator.
 
 // ProfessionsScoreCalculator calculates a character's title score.
 type ProfessionsScoreCalculator struct{}
@@ -102,6 +113,8 @@ func calculateProfessionsScore(professions []Profession, weighting int) int {
 
 	return score
 }
+
+// -- Progression score calculator.
 
 // TitleScoreCalculator calculates a character's title score.
 type ProgressionScoreCalculator struct{}

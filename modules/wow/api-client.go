@@ -77,7 +77,7 @@ func (c *ApiClient) doRequest(region string, path string, requestQuery map[strin
 
 	defer resp.Body.Close()
 
-	// This could be improved!
+	// This could be improved! In what ways?
 	if resp.StatusCode != 200 {
 		return errors.New("Unable to handle request.")
 	}

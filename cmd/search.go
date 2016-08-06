@@ -7,7 +7,20 @@ import (
 	"github.com/eidolon/gonsole"
 )
 
-func SearchCommand() gonsole.Command {
+// SearchCommand has fields for the dependencies of the search command.
+type SearchCommand struct {
+	calculator wow.ScoreCalculator
+}
+
+// NewSearchCommand creates a new instance of SearchCommand.
+func NewSearchCommand(calculator wow.ScoreCalculator) *SearchCommand {
+	return &SearchCommand{
+		calculator,
+	}
+}
+
+// Command creates an executable search command.
+func (c *SearchCommand) Command() gonsole.Command {
 	var apiKey string
 	var region string
 	var realm string
@@ -40,20 +53,18 @@ func SearchCommand() gonsole.Command {
 	}
 
 	execute := func() int {
+		fmt.Print("Fetching character...")
+
 		client := wow.NewApiClient(apiKey)
 		character, err := client.FindCharacter(region, realm, name)
+
+		fmt.Println("Done!")
 
 		if err != nil {
 			fmt.Println(err)
 
 			return 1
 		}
-
-		calculator := wow.AggregateScoreCalculator{}
-		calculator.AddCalculator(wow.AchievementScoreCalculator{})
-		calculator.AddCalculator(wow.ItemsScoreCalculator{})
-		calculator.AddCalculator(wow.ProfessionsScoreCalculator{})
-		calculator.AddCalculator(wow.ProgressionScoreCalculator{})
 
 		fmt.Println(fmt.Sprintf(
 			"Score for %s, a level %d %s %s:",
@@ -63,14 +74,14 @@ func SearchCommand() gonsole.Command {
 			character.ClassName(),
 		))
 
-		fmt.Println("-", calculator.Calculate(*character))
+		fmt.Println("↳ ", c.calculator.Calculate(*character))
 
 		return 0
 	}
 
 	return gonsole.Command{
 		Name:        "search",
-		Description: "Lookup player information in the command-line.",
+		Description: "Lookup player scores in the command-line.",
 		Configure:   configure,
 		Execute:     execute,
 	}
