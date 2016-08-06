@@ -3,6 +3,10 @@ package cmd
 import (
 	"net/http"
 
+	"net"
+
+	"fmt"
+
 	"github.com/SeerUK/GopherScore/handlers"
 	"github.com/SeerUK/GopherScore/modules/wow"
 	"github.com/eidolon/gonsole"
@@ -25,11 +29,26 @@ func NewServeCommand(calculator wow.ScoreCalculator) *ServeCommand {
 func (c *ServeCommand) Command() gonsole.Command {
 	var apiKey string
 
+	addr := net.ParseIP("0.0.0.0")
+	port := 8080
+
 	configure := func(d *gonsole.Definition) {
 		d.Arg(
 			gonsole.StringValue(&apiKey),
 			"APIKEY",
 			"An API key for the Battle.net API.",
+		)
+
+		d.Opt(
+			gonsole.IPValue(&addr),
+			"--addr=ADDR",
+			"An address to bind to.",
+		)
+
+		d.Opt(
+			gonsole.IntValue(&port),
+			"--port=PORT",
+			"A port to bind to.",
 		)
 	}
 
@@ -40,7 +59,11 @@ func (c *ServeCommand) Command() gonsole.Command {
 		router := mux.NewRouter()
 		router.HandleFunc("/score/{region}/{realm}/{name}", handler)
 
-		http.ListenAndServe("0.0.0.0:8080", router)
+		host := fmt.Sprintf("%s:%d", addr.String(), port)
+
+		fmt.Println(fmt.Sprintf("Listening on 'http://%s'.", host))
+
+		http.ListenAndServe(host, router)
 
 		return 0
 	}

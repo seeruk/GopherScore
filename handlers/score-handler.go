@@ -16,7 +16,7 @@ type ScoreHandler struct {
 	client     *wow.ApiClient
 }
 
-// NewScoreHandler create a new instance of score handler.
+// NewScoreHandler create a new instance
 func NewScoreHandler(calculator wow.ScoreCalculator, client *wow.ApiClient) *ScoreHandler {
 	return &ScoreHandler{
 		calculator: calculator,
