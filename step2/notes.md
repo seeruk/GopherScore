@@ -3,8 +3,7 @@ Step 2
 
 `main.go`:
 
-* Less imports.
-* `goimports`.
+* `goimports` is a thing.
 * `init()` function is handy.
 * Dependencies!
     * No version info.
