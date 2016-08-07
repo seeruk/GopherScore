@@ -45,7 +45,7 @@ func (h *ScoreHandler) Handler(w http.ResponseWriter, r *http.Request) {
 				"Character %s-%s could not be found in the '%s' region.",
 				name,
 				realm,
-				name,
+				strings.ToUpper(region),
 			),
 		})
 
