@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/SeerUK/GopherScore/modules/wow"
+	"github.com/SeerUK/GopherScore/stepx/modules/wow"
 	"github.com/gorilla/mux"
 )
 

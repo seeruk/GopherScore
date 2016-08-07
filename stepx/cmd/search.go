@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/SeerUK/GopherScore/modules/wow"
+	"github.com/SeerUK/GopherScore/stepx/modules/wow"
 	"github.com/eidolon/gonsole"
 )
 

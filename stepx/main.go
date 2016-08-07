@@ -4,8 +4,8 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/SeerUK/GopherScore/cmd"
-	"github.com/SeerUK/GopherScore/modules/wow"
+	"github.com/SeerUK/GopherScore/stepx/cmd"
+	"github.com/SeerUK/GopherScore/stepx/modules/wow"
 	"github.com/eidolon/gonsole"
 )
 

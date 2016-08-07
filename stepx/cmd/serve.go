@@ -7,8 +7,8 @@ import (
 
 	"fmt"
 
-	"github.com/SeerUK/GopherScore/handlers"
-	"github.com/SeerUK/GopherScore/modules/wow"
+	"github.com/SeerUK/GopherScore/stepx/handlers"
+	"github.com/SeerUK/GopherScore/stepx/modules/wow"
 	"github.com/eidolon/gonsole"
 	"github.com/gorilla/mux"
 )
