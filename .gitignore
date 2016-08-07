@@ -22,6 +22,10 @@ _testmain.go
 *.exe
 *.test
 *.prof
+3
+
+# Testing files
+coverage.out
 
 GopherScore
 main
