@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/SeerUK/GopherScore/stepx/handlers"
-	"github.com/SeerUK/GopherScore/stepx/modules/wow"
+	"github.com/SeerUK/GopherScore/step2/handlers"
+	"github.com/SeerUK/GopherScore/step2/modules/wow"
 	"github.com/gorilla/mux"
 )
 

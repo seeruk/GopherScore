@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/SeerUK/GopherScore/stepx/modules/wow"
+	"github.com/SeerUK/GopherScore/step2/modules/wow"
 	"github.com/gorilla/mux"
 )
 
@@ -52,9 +52,11 @@ func (h *ScoreHandler) Handler(w http.ResponseWriter, r *http.Request) {
 		// This could get to be familiar...
 		if err != nil {
 			http.Error(w, "Internal server error.", http.StatusInternalServerError)
+			return
 		}
 
 		w.Write(response)
+		return
 	}
 
 	score := h.calculator.Calculate(*character)
@@ -73,6 +75,7 @@ func (h *ScoreHandler) Handler(w http.ResponseWriter, r *http.Request) {
 	// This is duplicated, can you think of a way to improve it?
 	if err != nil {
 		http.Error(w, "Internal server error.", http.StatusInternalServerError)
+		return
 	}
 
 	w.Write(response)

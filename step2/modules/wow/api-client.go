@@ -11,9 +11,7 @@ import (
 
 // ApiClient provides easy access to specific World of Warcraft API endpoints.
 type ApiClient struct {
-	// A Battle.net API key.
 	ApiKey string
-	// A locale string (e.g. en_GB).
 	Locale string
 }
 
